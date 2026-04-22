@@ -1,5 +1,7 @@
 # Multi-Container Runtime — OS-Jackfruit
 
+ lightweight container runtime built in C for Linux. This project implements a multi-container supervisor with kernel-level memory monitoring, similar to how Docker works but much simpler.
+ 
 ## 1. Team Information
 
 | Name | SRN |
@@ -10,6 +12,8 @@
 ---
 
 ## 2. Build, Load, and Run Instructions
+
+the user-space runtime, test workloads, and a kernel module for memory enforcement
 
 ### Prerequisites
 
@@ -44,6 +48,8 @@ cp cpu_hog io_pulse memory_hog ./rootfs/
 
 ### Load Kernel Module
 
+The kernel module creates a character device and will enforce memory limits on our containers.
+
 ```bash
 sudo insmod monitor.ko
 ls -l /dev/container_monitor   # should appear
@@ -51,6 +57,8 @@ dmesg | tail -3                # confirm: "container_monitor: loaded"
 ```
 
 ### Start the Supervisor
+
+The supervisor is now running. It manages multiple containers, handles logging through a bounded buffer, and communicates via a UNIX socket.
 
 Open **Terminal 1**:
 
